@@ -12,7 +12,7 @@
         public function __construct(int $id, string $nome, float $valor, int $estoque){
             $this->id = $id;
             $this->nome = $nome;
-            $this->valor = valor;
+            $this->valor = $valor;
             $this->estoque = $estoque;
             $this->con = Database::conectar();
         }
