@@ -1,6 +1,6 @@
 <?php
 
-    require_once "Connecton.php";
+    require_once  __DIR__ . '/Connection.php';
 
     class ProdutosModel {
         private int $id;
