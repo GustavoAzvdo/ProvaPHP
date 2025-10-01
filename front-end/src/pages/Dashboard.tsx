@@ -1,32 +1,33 @@
 import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 import { AppProvider, type Navigation, type Router } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { DemoProvider, } from '@toolpad/core/internal';
 import { PageContainer } from '@toolpad/core/PageContainer';
 
-import Pedidos from './Pedidos'
+
+import ListaProdutos from '../components/ListaProdutos';
+import HistoricoVendas from '../components/HistoricoVendas';
 import React from 'react';
+import { History, ShoppingBag } from '@mui/icons-material';
 const NAVIGATION: Navigation = [
     {
         kind: 'header',
         title: 'Opções',
     },
     // se quiser adicionar mais, coloque o segment e o title e icon
+    
     {
-        segment: 'dashboard',
-        title: 'Dashboard',
-        icon: <DashboardIcon />,
+        segment: 'lista',
+        title: 'Produtos',
+        icon: <ShoppingBag />,
     },
     {
-        segment: 'pedidos',
-        title: 'Pedidos',
-        icon: <ShoppingCartIcon />,
-    },
-    {
-        kind: 'divider',
-    },
+        segment: 'vendas',
+        title: 'Vendas',
+        icon: <History />,
+    }
+    
    
 ];
 
@@ -65,9 +66,13 @@ function useDemoRouter(initialPath: string): Router {
 function renderContent(pathname: string, _router: Router) {
     // se quiser adicionar mais paginas, só adicionar outro case /o_local_que_deseja
     switch (pathname) {
-        case '/pedidos':
+        case '/lista':
             return (
-                <Pedidos />
+                <ListaProdutos />
+            )
+        case '/vendas':
+            return (
+                <HistoricoVendas />
             )
        
     }
