@@ -9,18 +9,18 @@
         exit();
     }
 
-    require_once __DIR__ . '/../model/ProdutosModel.php';
+    require_once __DIR__ . '/../Model/ProdutosModel.php';
 
     $method = $_SERVER['REQUEST_METHOD'];
-    $id = $_GET['id'] ?? null;
+    $ID = $_GET['ID'] ?? null;
 
     switch ($method) {
         case 'GET':
-            if ($id !== null) {
-                $produto = (new ProdutosModel(0, '', 0.0, 0))->buscarPorId((int)$id);
+            if ($ID !== null) {
+                $produto = (new ProdutosModel(0, '', 0.0, 0))->buscarPorId((int)$ID);
                 if ($produto) {
                     echo json_encode([
-                        'id' => $produto->getId(),
+                        'ID' => $produto->getId(),
                         'nome' => $produto->getNome(),
                         'valor' => $produto->getValor(),
                         'estoque' => $produto->getEstoque()
@@ -35,7 +35,7 @@
 
                 foreach ($produtos as $p) {
                     $resultado[] = [
-                        'id' => $p->getId(),
+                        'ID' => $p->getId(),
                         'nome' => $p->getNome(),
                         'valor' => $p->getValor(),
                         'estoque' => $p->getEstoque()
@@ -61,7 +61,7 @@
                 http_response_code(201);
                 echo json_encode([
                     'mensagem' => 'Produto criado com sucesso.',
-                    'id' => $produto->getId()
+                    'ID' => $produto->getId()
                 ]);
             } else {
                 http_response_code(500);
@@ -70,13 +70,13 @@
             break;
 
         case 'DELETE':
-            if ($id === null) {
+            if ($ID === null) {
                 http_response_code(400);
                 echo json_encode(['mensagem' => 'ID não fornecido.']);
                 exit;
             }
 
-            $produto = (new ProdutosModel(0, '', 0.0, 0))->buscarPorId((int)$id);
+            $produto = (new ProdutosModel(0, '', 0.0, 0))->buscarPorId((int)$ID);
 
             if ($produto && $produto->deletar()) {
                 echo json_encode(['mensagem' => 'Produto deletado com sucesso.']);

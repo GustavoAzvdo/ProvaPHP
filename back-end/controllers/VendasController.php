@@ -9,7 +9,7 @@
         exit();
     }
 
-    require_once __DIR__ . './VendasModel.php';
+    require_once __DIR__ . '/../Model/VendasModel.php';
 
     $method = $_SERVER['REQUEST_METHOD'];
     $id = $_GET['id'] ?? null;

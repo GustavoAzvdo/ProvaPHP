@@ -1,46 +1,46 @@
 <?php
 
-    require_once __DIR__ . "Connection.php";
+    require_once __DIR__ . "/Connection.php";
 
     class VendasModels {
-        private int $id;
-        private int $id_produto;
+        private int $ID;
+        private int $ID_produto;
         private int $quantidade;
         private float $valor_total;
         private string $data_venda;
         private PDO $con;
-        public function __construct(int $id, int $id_produto, int $quantidade, float $valor_total, string $data_venda) {
-            $this->id = $id;
-            $this->id_produto = $id_produto;
+        public function __construct(int $ID, int $ID_produto, int $quantidade, float $valor_total, string $data_venda) {
+            $this->ID = $ID;
+            $this->ID_produto = $ID_produto;
             $this->quantidade = $quantidade;
             $this->valor_total = $valor_total;
             $this->data_venda = $data_venda;
             $this->con = Database::conectar();
         }
 
-        public function getId(): int { return $this->id; }
-        public function getIdProduto(): int { return $this->id_produto; }
+        public function getId(): int { return $this->ID; }
+        public function getIdProduto(): int { return $this->ID_produto; }
         public function getQuantidade(): int { return $this->quantidade; }
         public function getValorTotal(): float { return $this->valor_total; }
         public function getDataVenda(): string { return $this->data_venda; }
 
-        public function setIdProduto(int $id_produto): void { $this->id_produto = $id_produto; }
+        public function setIdProduto(int $ID_produto): void { $this->ID_produto = $ID_produto; }
         public function setQuantidade(int $quantidade): void { $this->quantidade = $quantidade; }
         public function setValorTotal(float $valor_total): void { $this->valor_total = $valor_total; }
         public function setDataVenda(string $data_venda): void { $this->data_venda = $data_venda; }
 
         public function salvar(): bool {
             try {
-                $sql = "INSERT INTO vendas (id_produto, quantidade, valor_total, data_venda)
-                        VALUES (:id_produto, :quantidade, :valor_total, :data_venda)";
+                $sql = "INSERT INTO vendas (ID_produto, quantidade, valor_total, data_venda)
+                        VALUES (:ID_produto, :quantidade, :valor_total, :data_venda)";
                 $stmt = $this->con->prepare($sql);
-                $stmt->bindParam(":id_produto", $this->id_produto);
+                $stmt->bindParam(":ID_produto", $this->ID_produto);
                 $stmt->bindParam(":quantidade", $this->quantidade);
                 $stmt->bindParam(":valor_total", $this->valor_total);
                 $stmt->bindParam(":data_venda", $this->data_venda);
 
                 if ($stmt->execute()) {
-                    $this->id = (int)$this->con->lastInsertId();
+                    $this->ID = (int)$this->con->lastInsertId();
                     return true;
                 }
 
@@ -51,19 +51,19 @@
             }
         }
 
-        public function buscarPorId(int $id): ?VendasModels {
+        public function buscarPorId(int $ID): ?VendasModels {
             try {
-                $sql = "SELECT * FROM vendas WHERE id = :id";
+                $sql = "SELECT * FROM vendas WHERE ID = :ID";
                 $stmt = $this->con->prepare($sql);
-                $stmt->bindParam(":id", $id);
+                $stmt->bindParam(":ID", $ID);
                 $stmt->execute();
 
                 $dados = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($dados) {
                     return new VendasModels(
-                        (int)$dados['id'],
-                        (int)$dados['id_produto'],
+                        (int)$dados['ID'],
+                        (int)$dados['ID_produto'],
                         (int)$dados['quantidade'],
                         (float)$dados['valor_total'],
                         $dados['data_venda']
@@ -80,14 +80,14 @@
         public function atualizar(): bool {
             try {
                 $sql = "UPDATE vendas 
-                        SET id_produto = :id_produto, quantidade = :quantidade, valor_total = :valor_total, data_venda = :data_venda 
-                        WHERE id = :id";
+                        SET ID_produto = :ID_produto, quantidade = :quantidade, valor_total = :valor_total, data_venda = :data_venda 
+                        WHERE ID = :ID";
                 $stmt = $this->con->prepare($sql);
-                $stmt->bindParam(":id_produto", $this->id_produto);
+                $stmt->bindParam(":ID_produto", $this->ID_produto);
                 $stmt->bindParam(":quantidade", $this->quantidade);
                 $stmt->bindParam(":valor_total", $this->valor_total);
                 $stmt->bindParam(":data_venda", $this->data_venda);
-                $stmt->bindParam(":id", $this->id);
+                $stmt->bindParam(":ID", $this->ID);
 
                 return $stmt->execute();
             } catch (PDOException $e) {
@@ -98,9 +98,9 @@
 
         public function deletar(): bool {
             try {
-                $sql = "DELETE FROM vendas WHERE id = :id";
+                $sql = "DELETE FROM vendas WHERE ID = :ID";
                 $stmt = $this->con->prepare($sql);
-                $stmt->bindParam(":id", $this->id);
+                $stmt->bindParam(":ID", $this->ID);
 
                 return $stmt->execute();
             } catch (PDOException $e) {
@@ -119,8 +119,8 @@
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $venda = new VendasModels(
-                        (int)$row['id'],
-                        (int)$row['id_produto'],
+                        (int)$row['ID'],
+                        (int)$row['ID_produto'],
                         (int)$row['quantidade'],
                         (float)$row['valor_total'],
                         $row['data_venda']
