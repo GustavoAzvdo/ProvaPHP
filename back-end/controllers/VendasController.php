@@ -9,7 +9,7 @@
         exit();
     }
 
-    require_once __DIR__ . '/../model/VendasModel.php';
+    require_once __DIR__ . './VendasModel.php';
 
     $method = $_SERVER['REQUEST_METHOD'];
     $id = $_GET['id'] ?? null;
@@ -17,7 +17,7 @@
     switch ($method) {
         case 'GET':
             if ($id !== null) {
-                $venda = (new VendasModel(0, 0, 0, 0.0, ''))->buscarPorId((int)$id);
+                $venda = (new VendasModels(0, 0, 0, 0.0, ''))->buscarPorId((int)$id);
                 if ($venda) {
                     echo json_encode([
                         'id' => $venda->getId(),
@@ -31,7 +31,7 @@
                     echo json_encode(['mensagem' => 'Venda não encontrada.']);
                 }
             } else {
-                $vendas = VendasModel::buscarTodos();
+                $vendas = VendasModels::buscarTodos();
                 $resultado = [];
 
                 foreach ($vendas as $v) {
@@ -57,7 +57,7 @@
                 exit;
             }
 
-            $venda = new VendasModel(
+            $venda = new VendasModels(
                 0,
                 (int)$input['id_produto'],
                 (int)$input['quantidade'],
@@ -84,7 +84,7 @@
                 exit;
             }
 
-            $venda = (new VendasModel(0, 0, 0, 0.0, ''))->buscarPorId((int)$id);
+            $venda = (new VendasModels(0, 0, 0, 0.0, ''))->buscarPorId((int)$id);
 
             if ($venda && $venda->deletar()) {
                 echo json_encode(['mensagem' => 'Venda deletada com sucesso.']);

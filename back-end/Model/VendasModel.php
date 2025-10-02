@@ -8,7 +8,7 @@
         private int $quantidade;
         private float $valor_total;
         private string $data_venda;
-
+        private PDO $con;
         public function __construct(int $id, int $id_produto, int $quantidade, float $valor_total, string $data_venda) {
             $this->id = $id;
             $this->id_produto = $id_produto;
@@ -51,7 +51,7 @@
             }
         }
 
-        public function buscarPorId(int $id): ?VendasModel {
+        public function buscarPorId(int $id): ?VendasModels {
             try {
                 $sql = "SELECT * FROM vendas WHERE id = :id";
                 $stmt = $this->con->prepare($sql);
@@ -61,7 +61,7 @@
                 $dados = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($dados) {
-                    return new VendasModel(
+                    return new VendasModels(
                         (int)$dados['id'],
                         (int)$dados['id_produto'],
                         (int)$dados['quantidade'],
@@ -118,7 +118,7 @@
                 $vendas = [];
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $venda = new VendasModel(
+                    $venda = new VendasModels(
                         (int)$row['id'],
                         (int)$row['id_produto'],
                         (int)$row['quantidade'],
