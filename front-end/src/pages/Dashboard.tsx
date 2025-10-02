@@ -8,10 +8,11 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 import ListaProdutos from '../components/ListaProdutos';
 import HistoricoVendas from '../components/HistoricoVendas';
 import React from 'react';
-import { History, ShoppingBag, Store } from '@mui/icons-material';
+import { History, ShoppingBag, Store, Analytics } from '@mui/icons-material';
 import { Box,  Typography } from '@mui/material';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import Analise from '../components/Análise'
 
 const NAVIGATION: Navigation = [
     {
@@ -27,6 +28,11 @@ const NAVIGATION: Navigation = [
         segment: 'vendas',
         title: 'Vendas',
         icon: <History />,
+    },
+    {
+        segment: 'analise',
+        title: 'Análise',
+        icon: <Analytics />,
     }
 ];
 
@@ -68,6 +74,8 @@ function renderContent(pathname: string, _router: Router) {
             return <ListaProdutos />
         case '/vendas':
             return <HistoricoVendas />
+        case '/analise':
+            return <Analise />
         default:
             return (
                 <Box sx={{
