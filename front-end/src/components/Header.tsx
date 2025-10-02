@@ -1,22 +1,40 @@
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { LocalMallOutlined } from '@mui/icons-material';
+import {  Store } from '@mui/icons-material';
+import { Chip } from '@mui/material';
 
 export default function Header() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Sistema de compra e histórico de produtos
-          </Typography>
-          <Button color="inherit"><LocalMallOutlined/></Button>
-        </Toolbar>
-      </AppBar>
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 1.5,
+      py: 0.5
+    }}>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'primary.main',
+        borderRadius: 1,
+        p: 1,
+        minWidth: 40,
+        height: 40
+      }}>
+        <Store sx={{
+          color: 'white',
+          fontSize: 24
+        }} />
+      </Box>
+      <Chip
+        size="small"
+        variant="outlined"
+        label="BETA"
+        sx={{
+          color: "primary.main",
+          fontWeight: 'bold',
+          fontSize: '0.75rem'
+        }}
+      />
     </Box>
   );
 }

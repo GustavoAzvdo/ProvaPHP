@@ -13,8 +13,7 @@ import {
   CircularProgress
   
 } from '@mui/material';
-import Header from './Header';
-import Footer from './Footer';
+
 
 const API_VENDAS_URL = 'http://localhost:8080/controllers/VendasController.php';
 
@@ -43,18 +42,18 @@ export default function HistoricoVendas() {
   if (loading) {
     return (
       <>
-        <Header />
+      
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4, display: 'flex', justifyContent: 'center' }}>
           <CircularProgress />
         </Container>
-        <Footer />
+    
       </>
     );
   }
 
   return (
     <>
-      <Header/>
+     
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 3 }}>
           Histórico de Vendas
@@ -95,7 +94,7 @@ export default function HistoricoVendas() {
           </Table>
         </TableContainer>
       </Container>
-      <Footer/>
+      
     </>
   );
 }

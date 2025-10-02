@@ -1,54 +1,100 @@
 import { GitHub } from '@mui/icons-material'
-import { Box, Container, IconButton, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Typography, Tooltip } from '@mui/material'
 
-const Footer = () => {
+interface FooterProps {
+    mini?: boolean;
+}
+
+const Footer = ({ mini = false }: FooterProps) => {
+    if (mini) {
+        return (
+            <Box sx={{
+                p: 1,
+                mt: 'auto',
+                bgcolor: 'primary.main',
+                color: 'white',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 0.5,
+                width: '84px'
+            }}
+                
+            >
+                <Tooltip title="Gustavo Azevedo" placement="right">
+                    <IconButton
+                        component="a"
+                        href="https://github.com/GustavoAzvdo"
+                        target="_blank"
+                        size="small"
+                        sx={{ color: 'white', p: 0.5 }}
+                    >
+                        <GitHub sx={{ fontSize: 14 }} />
+                    </IconButton>
+                </Tooltip>
+                
+                <Tooltip title="Jhonathan William" placement="right">
+                    <IconButton
+                        component="a"
+                        href="https://github.com/Jhonathan-Will"
+                        target="_blank"
+                        size="small"
+                        sx={{ color: 'white', p: 0.5 }}
+                    >
+                        <GitHub sx={{ fontSize: 14 }} />
+                    </IconButton>
+                </Tooltip>
+                
+                <Typography variant="caption" color="white" sx={{ fontSize: '0.6rem', textAlign: 'center', mt: 0.5 }}>
+                    ©2025
+                </Typography>
+            </Box>
+        )
+    }
+
+    //normal expandida
     return (
         <Box sx={{
+            p: 2,
             mt: 'auto',
             bgcolor: 'primary.main',
-            py: 3
+            color: 'white'
         }}>
-            <Container maxWidth="md">
-                <Stack spacing={2} alignItems="center">
-                    {/* Nomes dos desenvolvedores */}
-                    <Stack direction="row" spacing={4} alignItems="center">
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Typography variant="body1" color="white" fontWeight={500}>
-                                Gustavo Azevedo
-                            </Typography>
-                            <IconButton
-                                component="a"
-                                href="https://github.com/GustavoAzvdo" 
-                                target="_blank"
-                                size="small"
-                                sx={{ color: 'white' }}
-                            >
-                                <GitHub fontSize="small" />
-                            </IconButton>
-                        </Stack>
-                        
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Typography variant="body1" color="white" fontWeight={500}>
-                                Jhonathan William
-                            </Typography>
-                            <IconButton
-                                component="a"
-                                href="https://github.com/Jhonathan-Will"
-                                target="_blank"
-                                size="small"
-                                sx={{ color: 'white' }}
-                            >
-                                <GitHub fontSize="small" />
-                            </IconButton>
-                        </Stack>
-                    </Stack>
-
-                    {/* Copyright */}
-                    <Typography variant="body2" color="rgba(255, 255, 255, 0.7)" textAlign="center">
-                        © 2025 Todos os direitos reservados
+            <Stack spacing={1.5}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="caption" fontWeight={500} color="white">
+                        Gustavo Azevedo
                     </Typography>
+                    <IconButton
+                        component="a"
+                        href="https://github.com/GustavoAzvdo"
+                        target="_blank"
+                        size="small"
+                        sx={{ color: 'white', p: 0.5 }}
+                    >
+                        <GitHub sx={{ fontSize: 16 }} />
+                    </IconButton>
                 </Stack>
-            </Container>
+
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="caption" fontWeight={500} color="white">
+                        Jhonathan William
+                    </Typography>
+                    <IconButton
+                        component="a"
+                        href="https://github.com/Jhonathan-Will"
+                        target="_blank"
+                        size="small"
+                        sx={{ color: 'white', p: 0.5 }}
+                    >
+                        <GitHub sx={{ fontSize: 16 }} />
+                    </IconButton>
+                </Stack>
+                
+                <Typography variant="caption" color="white" textAlign="center" sx={{ mt: 1 }}>
+                    © 2025 Todos os direitos reservados
+                </Typography>
+            </Stack>
         </Box>
     )
 }

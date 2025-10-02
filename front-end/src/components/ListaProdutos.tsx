@@ -19,8 +19,7 @@ import {
     IconButton
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import Footer from './Footer';
-import Header from './Header';
+
 
 const API_PRODUTOS_URL = 'http://localhost:8080/controllers/ProdutosController.php';
 const API_VENDAS_URL = 'http://localhost:8080/controllers/VendasController.php';
@@ -141,7 +140,6 @@ export default function ListaProdutos() {
 
     return (
         <>
-            <Header />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Card sx={{ mb: 4 }}>
                     <CardContent>
@@ -275,7 +273,7 @@ export default function ListaProdutos() {
                     </Table>
                 </TableContainer>
             </Container>
-            <Footer />
+          
         </>
     );
 }
