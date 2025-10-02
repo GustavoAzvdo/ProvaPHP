@@ -9,8 +9,8 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 import ListaProdutos from '../components/ListaProdutos';
 import HistoricoVendas from '../components/HistoricoVendas';
 import React from 'react';
-import { History, LocalMall, ShoppingBag } from '@mui/icons-material';
-import { Box,  Chip } from '@mui/material';
+import { History,  ShoppingBag, Store } from '@mui/icons-material';
+import { Box, Chip, Typography } from '@mui/material';
 const NAVIGATION: Navigation = [
     {
         kind: 'header',
@@ -75,6 +75,25 @@ function renderContent(pathname: string, _router: Router) {
             return (
                 <HistoricoVendas />
             )
+        default:
+            return (
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '50vh',
+                    textAlign: 'center'
+                }}>
+                    <Store sx={{ fontSize: 64, color: 'primary.main', mb: 2 }} />
+                    <Typography variant="h4" gutterBottom>
+                        Bem-vindo ao Sistema
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        Selecione uma opção no menu lateral para começar
+                    </Typography>
+                </Box>
+            )
 
     }
 }
@@ -106,19 +125,42 @@ export default function DashboardLayoutBasic(props: DemoProps) {
                 theme={demoTheme}
                 window={demoWindow}
                 branding={{
-                    logo: <Box sx={{display: 'flex', alignItems:' center', justifyContent: 'center'}}>
-                        <Chip
-                        sx={{
-                            px: 1,
-                            mx: 1
-                        }}
-                            color='success'
-                            label='BETA'
-                        />
-                        <LocalMall sx={{color: 'primary.main'}}/>
-                    </Box>,
-                    title: 'Cadastro e Histórico de Produtos' 
-                    
+                    logo: (
+                        <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 1.5,
+                            py: 0.5
+                        }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                bgcolor: 'primary.main',
+                                borderRadius: 1,
+                                p: 1,
+                                minWidth: 40,
+                                height: 40
+                            }}>
+                                <Store sx={{ 
+                                    color: 'white', 
+                                    fontSize: 24 
+                                }} />
+                            </Box>
+                            <Chip
+                                size="small"
+                                variant="outlined"
+                                
+                                label="BETA"
+                                sx={{ 
+                                    color:"primary.main",
+                                    fontWeight: 'bold',
+                                    fontSize: '0.75rem'
+                                }}
+                            />
+                        </Box>
+                    ),
+                    title: 'Sistema de Produtos',
                 }}
             >
                 <DashboardLayout>
