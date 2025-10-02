@@ -24,7 +24,7 @@ export default function HistoricoVendas() {
   useEffect(() => {
     const fetchVendas = async () => {
       try {
-        setLoading(true); // Inicia o carregamento
+        setLoading(true); 
         const response = await axios.get(API_VENDAS_URL);
         if (Array.isArray(response.data)) {
           setVendas(response.data);
@@ -32,7 +32,7 @@ export default function HistoricoVendas() {
       } catch (error) {
         console.error("Erro ao buscar histórico de vendas:", error);
       } finally {
-        setLoading(false); // Finaliza o carregamento (com sucesso ou erro)
+        setLoading(false); 
       }
     };
 

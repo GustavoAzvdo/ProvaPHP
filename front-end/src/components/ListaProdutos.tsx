@@ -19,7 +19,7 @@ import {
     IconButton
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-
+import Aviso from './Aviso';
 
 const API_PRODUTOS_URL = 'http://localhost:8080/controllers/ProdutosController.php';
 const API_VENDAS_URL = 'http://localhost:8080/controllers/VendasController.php';
@@ -33,6 +33,17 @@ export default function ListaProdutos() {
         estoque: ''
     });
 
+    // Estados para o Snackbar
+    const [avisoOpen, setAvisoOpen] = useState(false);
+    const [avisoMessage, setAvisoMessage] = useState('');
+    const [avisoSeverity, setAvisoSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('info');
+
+    const mostrarAviso = (message: string, severity: 'success' | 'error' | 'warning' | 'info' = 'info') => {
+        setAvisoMessage(message);
+        setAvisoSeverity(severity);
+        setAvisoOpen(true);
+    };
+
     const fetchProdutos = async () => {
         try {
             const response = await axios.get(API_PRODUTOS_URL);
@@ -40,7 +51,6 @@ export default function ListaProdutos() {
             if (Array.isArray(response.data)) {
                 setProdutos(response.data);
             } else {
-             
                 console.error("A resposta da API não é um array! Resposta recebida:", response.data);
                 setProdutos([]);
             }
@@ -68,12 +78,12 @@ export default function ListaProdutos() {
         const quantidade = quantidades[produto.ID] || 0;
 
         if (quantidade <= 0) {
-            alert('Por favor, defina uma quantidade maior que zero.');
+            mostrarAviso('Por favor, defina uma quantidade maior que zero.', 'warning');
             return;
         }
 
         if (quantidade > produto.estoque) {
-            alert(`Quantidade indisponível. Estoque atual: ${produto.estoque}`);
+            mostrarAviso(`Quantidade indisponível. Estoque atual: ${produto.estoque}`, 'error');
             return;
         }
 
@@ -86,12 +96,12 @@ export default function ListaProdutos() {
 
         try {
             const response = await axios.post(API_VENDAS_URL, novaVenda);
-            alert(`Compra registrada com sucesso! ID da Venda: ${response.data.ID}`);
+            mostrarAviso(`Compra registrada com sucesso!`, 'success');
             setQuantidades(prev => ({ ...prev, [produto.ID]: 0 }));
             fetchProdutos();
         } catch (error) {
             console.error('Erro ao registrar a compra:', error);
-            alert('Ocorreu um erro ao registrar a compra.');
+            mostrarAviso('Ocorreu um erro ao registrar a compra.', 'error');
         }
     };
 
@@ -104,24 +114,23 @@ export default function ListaProdutos() {
 
     const adicionarProduto = async () => {
         if (!novoProduto.nome || !novoProduto.valor || !novoProduto.estoque) {
-            alert('Por favor, preencha todos os campos.');
+            mostrarAviso('Por favor, preencha todos os campos.', 'warning');
             return;
         }
 
         try {
             await axios.post(API_PRODUTOS_URL, {
                 nome: novoProduto.nome,
-
                 valor: parseFloat(novoProduto.valor),
                 estoque: parseInt(novoProduto.estoque, 10)
             });
-            alert('Produto adicionado com sucesso!');
+            mostrarAviso('Produto adicionado com sucesso!', 'success');
 
             setNovoProduto({ nome: '', valor: '', estoque: '' });
             fetchProdutos();
         } catch (error) {
             console.error("Erro ao adicionar produto:", error);
-            alert("Falha ao adicionar o produto.");
+            mostrarAviso("Falha ao adicionar o produto.", 'error');
         }
     };
 
@@ -129,11 +138,11 @@ export default function ListaProdutos() {
         if (window.confirm(`Tem certeza que deseja excluir o produto "${nomeProduto}"?`)) {
             try {
                 await axios.delete(`${API_PRODUTOS_URL}?ID=${produtoId}`);
-                alert('Produto excluído com sucesso!');
+                mostrarAviso('Produto excluído com sucesso!', 'success');
                 fetchProdutos();
             } catch (error) {
                 console.error("Erro ao excluir produto:", error);
-                alert("Falha ao excluir o produto.");
+                mostrarAviso("Falha ao excluir o produto.", 'error');
             }
         }
     };
@@ -273,7 +282,14 @@ export default function ListaProdutos() {
                     </Table>
                 </TableContainer>
             </Container>
-          
+            
+            {/* Componente Aviso/Snackbar */}
+            <Aviso
+                open={avisoOpen}
+                message={avisoMessage}
+                severity={avisoSeverity}
+                onClose={() => setAvisoOpen(false)}
+            />
         </>
     );
 }
