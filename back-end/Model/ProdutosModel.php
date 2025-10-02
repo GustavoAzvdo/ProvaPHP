@@ -1,6 +1,6 @@
 <?php
 
-require_once  __DIR__ . '/Connection.php';
+require_once __DIR__ . '/Connection.php';
 
 class ProdutosModel
 {
@@ -8,7 +8,7 @@ class ProdutosModel
     private string $nome;
     private float $valor;
     private int $estoque;
-    private PDO $con;
+    private ?PDO $con = null; 
 
     public function __construct(int $ID, string $nome, float $valor, int $estoque)
     {
@@ -16,44 +16,16 @@ class ProdutosModel
         $this->nome = $nome;
         $this->valor = $valor;
         $this->estoque = $estoque;
-       
     }
 
-    public function getId(): int
-    {
-        return $this->ID;
-    }
-
-    public function getNome(): string
-    {
-        return $this->nome;
-    }
-
-    public function getValor(): float
-    {
-        return $this->valor;
-    }
-
-    public function getEstoque(): int
-    {
-        return $this->estoque;
-    }
-
-    public function setNome(string $nome): void
-    {
-        $this->nome = $nome;
-    }
-
-    public function setValor(float $valor): void
-    {
-        $this->valor = $valor;
-    }
-
-    public function setEstoque(int $estoque): void
-    {
-        $this->estoque = $estoque;
-    }
-
+    // Seus Getters e Setters estão perfeitos
+    public function getId(): int { return $this->ID; }
+    public function getNome(): string { return $this->nome; }
+    public function getValor(): float { return $this->valor; }
+    public function getEstoque(): int { return $this->estoque; }
+    public function setNome(string $nome): void { $this->nome = $nome; }
+    public function setValor(float $valor): void { $this->valor = $valor; }
+    public function setEstoque(int $estoque): void { $this->estoque = $estoque; }
 
     public function salvar(): bool
     {
@@ -68,11 +40,10 @@ class ProdutosModel
             if ($stmt->execute()) {
                 $this->ID = (int)$this->con->lastInsertId();
                 return true;
-            } else {
-                return false;
             }
+            return false;
         } catch (PDOException $e) {
-            echo "Erro ao salvar produto: " . $e->getMessage();
+            error_log("Erro ao salvar produto: " . $e->getMessage());
             return false;
         }
     }
@@ -80,15 +51,15 @@ class ProdutosModel
     public static function buscarPorId(int $ID): ?ProdutosModel
     {
         try {
-            $con = Database::conectar(); // Pega a conexão aqui dentro
+            $con = Database::conectar();
             $sql = "SELECT * FROM produtos WHERE ID = :ID";
             $stmt = $con->prepare($sql);
-            $stmt->bindParam(":id", $ID);
+            // CORREÇÃO 1: O placeholder deve ser ':ID' (maiúsculo), igual ao SQL.
+            $stmt->bindParam(":ID", $ID);
             $stmt->execute();
             $dados = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($dados) {
-              
                 return new self(
                     (int)$dados['ID'],
                     $dados['nome'],
@@ -98,7 +69,7 @@ class ProdutosModel
             }
             return null;
         } catch (PDOException $e) {
-            error_log("Erro ao buscar produto por ID: " . $e->getMessage()); 
+            error_log("Erro ao buscar produto por ID: " . $e->getMessage());
             return null;
         }
     }
@@ -106,16 +77,19 @@ class ProdutosModel
     public function atualizar(): bool
     {
         try {
+            // CORREÇÃO 2: A conexão precisa ser estabelecida dentro do método.
+            $this->con = Database::conectar();
             $sql = "UPDATE produtos SET nome = :nome, valor = :valor, estoque = :estoque WHERE ID = :ID";
             $stmt = $this->con->prepare($sql);
             $stmt->bindParam(":nome", $this->nome);
             $stmt->bindParam(":valor", $this->valor);
             $stmt->bindParam(":estoque", $this->estoque);
-            $stmt->bindParam(":id", $this->ID);
+            // CORREÇÃO 1: O placeholder deve ser ':ID' (maiúsculo).
+            $stmt->bindParam(":ID", $this->ID);
 
             return $stmt->execute();
         } catch (PDOException $e) {
-            echo "Erro ao atualizar produto: " . $e->getMessage();
+            error_log("Erro ao atualizar produto: " . $e->getMessage());
             return false;
         }
     }
@@ -123,12 +97,29 @@ class ProdutosModel
     public function deletar(): bool
     {
         try {
+           
+            $this->con = Database::conectar();
             $sql = "DELETE FROM produtos WHERE ID = :ID";
             $stmt = $this->con->prepare($sql);
-            $stmt->bindParam(":id", $this->ID);
+            $stmt->bindParam(":ID", $this->ID);
             return $stmt->execute();
         } catch (PDOException $e) {
-            echo "Erro ao deletar produto: " . $e->getMessage();
+            error_log("Erro ao deletar produto: " . $e->getMessage());
+            return false;
+        }
+    }
+
+      public static function deletarPorId(int $id): bool
+    {
+        try {
+            $con = Database::conectar();
+            $sql = "DELETE FROM produtos WHERE ID = :ID";
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(":ID", $id);
+            return $stmt->execute() && $stmt->rowCount() > 0;
+            
+        } catch (PDOException $e) {
+            error_log("Erro ao deletar produto por ID: " . $e->getMessage());
             return false;
         }
     }
@@ -153,7 +144,7 @@ class ProdutosModel
 
             return $resultados;
         } catch (PDOException $e) {
-            echo "Erro ao buscar produtos: " . $e->getMessage();
+            error_log("Erro ao buscar produtos: " . $e->getMessage());
             return [];
         }
     }

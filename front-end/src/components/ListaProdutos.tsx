@@ -22,8 +22,8 @@ import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import Footer from './Footer';
 import Header from './Header';
 
-const API_PRODUTOS_URL = 'http://localhost:8080/ProdutosController.php';
-const API_VENDAS_URL = 'http://localhost:8080/VendasController.php';
+const API_PRODUTOS_URL = 'http://localhost:8080/controllers/ProdutosController.php';
+const API_VENDAS_URL = 'http://localhost:8080/controllers/VendasController.php';
 
 export default function ListaProdutos() {
     const [produtos, setProdutos] = useState<any[]>([]);
@@ -37,17 +37,17 @@ export default function ListaProdutos() {
     const fetchProdutos = async () => {
         try {
             const response = await axios.get(API_PRODUTOS_URL);
-            // Apenas atualiza o estado se a resposta for de fato um array
+          
             if (Array.isArray(response.data)) {
                 setProdutos(response.data);
             } else {
-                // Se não for um array, não quebre a aplicação. Coloque um array vazio.
+             
                 console.error("A resposta da API não é um array! Resposta recebida:", response.data);
                 setProdutos([]);
             }
         } catch (error) {
             console.error("Erro ao buscar produtos:", error);
-            setProdutos([]); // Garante que produtos seja um array mesmo em caso de erro
+            setProdutos([]); 
         }
     };
 
@@ -108,19 +108,7 @@ export default function ListaProdutos() {
             alert('Por favor, preencha todos os campos.');
             return;
         }
-        const produtoParaEnviar = {
-            nome: novoProduto.nome,
-            // Vejo que 'descricao' foi removida do seu formulário.
-            // Se o seu backend EXIGE 'descricao', este pode ser o problema.
-            // Vamos supor por enquanto que não exige.
-            valor: parseFloat(novoProduto.valor),
-            estoque: parseInt(novoProduto.estoque, 10)
-        };
 
-        // ADICIONE ESTAS LINHAS PARA DEBUG
-        console.log("--- DADOS QUE ESTÃO SENDO ENVIADOS PARA A API ---");
-        console.log(produtoParaEnviar);
-        console.log("-------------------------------------------");
         try {
             await axios.post(API_PRODUTOS_URL, {
                 nome: novoProduto.nome,
@@ -141,7 +129,7 @@ export default function ListaProdutos() {
     const excluirProduto = async (produtoId: number, nomeProduto: string) => {
         if (window.confirm(`Tem certeza que deseja excluir o produto "${nomeProduto}"?`)) {
             try {
-                await axios.delete(`${API_PRODUTOS_URL}?id=${produtoId}`);
+                await axios.delete(`${API_PRODUTOS_URL}?ID=${produtoId}`);
                 alert('Produto excluído com sucesso!');
                 fetchProdutos();
             } catch (error) {
@@ -162,7 +150,7 @@ export default function ListaProdutos() {
                             Adicionar Novo Produto
                         </Typography>
                         <Grid container spacing={2}>
-                            <Grid size={{ xs: 12, md: 6 }}>
+                            <Grid size={{ xs: 12, md: 4 }}>
                                 <TextField
                                     fullWidth
                                     label="Nome do Produto"
@@ -173,7 +161,7 @@ export default function ListaProdutos() {
                                 />
                             </Grid>
 
-                            <Grid size={{ xs: 12, md: 6 }}>
+                            <Grid size={{ xs: 12, md: 4 }}>
                                 <TextField
                                     fullWidth
                                     label="Preço (R$)"
@@ -185,7 +173,7 @@ export default function ListaProdutos() {
                                     InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                                 />
                             </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
+                            <Grid size={{ xs: 12, md: 4 }}>
                                 <TextField
                                     fullWidth
                                     label="Estoque"
@@ -222,8 +210,8 @@ export default function ListaProdutos() {
                     <Table sx={{ minWidth: 650 }} aria-label="tabela de produtos">
                         <TableHead>
                             <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Produto</TableCell>
-
                                 <TableCell sx={{ fontWeight: 'bold' }} align="right">Preço Unitário</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }} align="center">Estoque</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }} align="center">Ações de Compra</TableCell>
@@ -232,9 +220,19 @@ export default function ListaProdutos() {
                         </TableHead>
                         <TableBody>
                             {produtos.map((produto) => (
-                                <TableRow key={produto.ID}>
+                                <TableRow
+                                    key={produto.ID}
+                                    sx={{             
+                                        ...(produto.estoque === 0 && {
+                                            backgroundColor: '#f5f5f592',        
+                                            '& > *': {
+                                                color: '#757575',
+                                            },
+                                        }),
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">{produto.ID}</TableCell>
                                     <TableCell component="th" scope="row">{produto.nome}</TableCell>
-
                                     <TableCell align="right">
                                         {parseFloat(produto.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                     </TableCell>
@@ -246,15 +244,17 @@ export default function ListaProdutos() {
                                                 type="number"
                                                 size="small"
                                                 variant="outlined"
-                                                value={quantidades[produto.id] || ''}
-                                                onChange={(e) => handleQuantidadeChange(produto.id, e.target.value)}
+                                                value={quantidades[produto.ID] || ''}
+                                                onChange={(e) => handleQuantidadeChange(produto.ID, e.target.value)}
                                                 sx={{ width: '80px' }}
                                                 InputProps={{ inputProps: { min: 0, max: produto.estoque } }}
+                                                disabled={produto.estoque === 0}
                                             />
                                             <Button
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={() => comprarProduto(produto)}
+                                                disabled={produto.estoque === 0}
                                             >
                                                 Comprar
                                             </Button>
@@ -263,7 +263,7 @@ export default function ListaProdutos() {
                                     <TableCell align="center">
                                         <IconButton
                                             color="error"
-                                            onClick={() => excluirProduto(produto.id, produto.nome)}
+                                            onClick={() => excluirProduto(produto.ID, produto.nome)}
                                             aria-label={`Excluir ${produto.nome}`}
                                         >
                                             <DeleteIcon />

@@ -9,14 +9,15 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 import ListaProdutos from '../components/ListaProdutos';
 import HistoricoVendas from '../components/HistoricoVendas';
 import React from 'react';
-import { History, ShoppingBag } from '@mui/icons-material';
+import { History, LocalMall, ShoppingBag } from '@mui/icons-material';
+import { Box,  Chip } from '@mui/material';
 const NAVIGATION: Navigation = [
     {
         kind: 'header',
         title: 'Opções',
     },
     // se quiser adicionar mais, coloque o segment e o title e icon
-    
+
     {
         segment: 'lista',
         title: 'Produtos',
@@ -27,8 +28,8 @@ const NAVIGATION: Navigation = [
         title: 'Vendas',
         icon: <History />,
     }
-    
-   
+
+
 ];
 
 const demoTheme = createTheme({
@@ -74,7 +75,7 @@ function renderContent(pathname: string, _router: Router) {
             return (
                 <HistoricoVendas />
             )
-       
+
     }
 }
 
@@ -105,8 +106,19 @@ export default function DashboardLayoutBasic(props: DemoProps) {
                 theme={demoTheme}
                 window={demoWindow}
                 branding={{
-                    logo: '',
-                    title: 'Dashboard'
+                    logo: <Box sx={{display: 'flex', alignItems:' center', justifyContent: 'center'}}>
+                        <Chip
+                        sx={{
+                            px: 1,
+                            mx: 1
+                        }}
+                            color='success'
+                            label='BETA'
+                        />
+                        <LocalMall sx={{color: 'primary.main'}}/>
+                    </Box>,
+                    title: 'Cadastro e Histórico de Produtos' 
+                    
                 }}
             >
                 <DashboardLayout>
