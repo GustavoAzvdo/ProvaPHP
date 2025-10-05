@@ -8,26 +8,26 @@ INSERT INTO produtos (nome, valor, estoque) VALUES
 ('Relógio Smartwatch', 299.90, 80),
 ('Teclado Mecânico', 249.90, 60),
 ('Jaqueta Jeans', 159.90, 40),
-('Mochila Escolar', 119.90, 70);
-('Camiseta Branca', 49.90, 120);
-('Tênis Esportivo', 199.99, 75);
-('Fone Bluetooth', 89.90, 200);
-('Notebook Gamer', 3999.99, 15);
-('Mouse Sem Fio', 59.90, 300);
-('Celular Android', 1299.00, 45);
-('Smartwatch', 299.90, 60);
-('Teclado Mecânico', 249.90, 90);
-('Jaqueta Jeans', 159.90, 40);
-('Mochila Escolar', 119.90, 150);
-('Monitor Full HD', 899.00, 50);
-('Webcam 1080p', 189.90, 80);
-('Carregador Portátil', 89.90, 100);
-('Cadeira Gamer', 1399.90, 20);
-('Impressora Wi-Fi', 699.90, 30);
-('HD Externo 1TB', 399.90, 60);
-('Tablet Android', 799.00, 50);
-('Smart TV 50"', 2499.00, 25);
-('Drone com Câmera', 1599.99, 15);
+('Mochila Escolar', 119.90, 70),
+('Camiseta Branca', 49.90, 120),
+('Tênis Esportivo', 199.99, 75),
+('Fone Bluetooth', 89.90, 200),
+('Notebook Gamer', 3999.99, 15),
+('Mouse Sem Fio', 59.90, 300),
+('Celular Android', 1299.00, 45),
+('Smartwatch', 299.90, 60),
+('Teclado Mecânico', 249.90, 90),
+('Jaqueta Jeans', 159.90, 40),
+('Mochila Escolar', 119.90, 150),
+('Monitor Full HD', 899.00, 50),
+('Webcam 1080p', 189.90, 80),
+('Carregador Portátil', 89.90, 100),
+('Cadeira Gamer', 1399.90, 20),
+('Impressora Wi-Fi', 699.90, 30),
+('HD Externo 1TB', 399.90, 60),
+('Tablet Android', 799.00, 50),
+('Smart TV 50"', 2499.00, 25),
+('Drone com Câmera', 1599.99, 15),
 ('Câmera DSLR', 2999.90, 10);
 
 INSERT INTO vendas (ID_produto, quantidade, valor_total, data_venda) VALUES
